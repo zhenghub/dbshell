@@ -11,5 +11,8 @@ lazy val dependencies = Seq(
   , "io.github.netvl.picopickle" %% "picopickle-core" % "0.3.0"
 )
 
-libraryDependencies ++= dependencies
+lazy val hbaseShell = Seq(
 
+)
+
+libraryDependencies ++= dependencies

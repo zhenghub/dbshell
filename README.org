@@ -1,0 +1,2 @@
+* dbshell
+database shell based on scala inspired by scalikejdbc dbconsole

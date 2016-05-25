@@ -1,0 +1,65 @@
+#!/bin/sh
+#/*--------------------------------------------------------------------------
+# *  Copyright 2012 Taro L. Saito
+# *
+# *  Licensed under the Apache License, Version 2.0 (the "License");
+# *  you may not use this file except in compliance with the License.
+# *  You may obtain a copy of the License at
+# *
+# *     http://www.apache.org/licenses/LICENSE-2.0
+# *
+# *  Unless required by applicable law or agreed to in writing, software
+# *  distributed under the License is distributed on an "AS IS" BASIS,
+# *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# *  See the License for the specific language governing permissions and
+# *  limitations under the License.
+# *--------------------------------------------------------------------------*/
+
+if [ -z "$PROG_HOME" ] ; then
+  ## resolve links - $0 may be a link to PROG_HOME
+  PRG="$0"
+
+  # need this for relative symlinks
+  while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+      PRG="$link"
+    else
+      PRG="`dirname "$PRG"`/$link"
+    fi
+  done
+
+  saveddir=`pwd`
+
+  PROG_HOME=`dirname "$PRG"`/..
+
+  # make it fully qualified
+  PROG_HOME=`cd "$PROG_HOME" && pwd`
+
+  cd "$saveddir"
+fi
+
+SCALACMD=scala
+
+CLASSPATH_SUFFIX=""
+# Path separator used in EXTRA_CLASSPATH
+PSEP=":"
+
+PROG_NAME={{{PROG_NAME}}}
+PROG_VERSION={{{PROG_VERSION}}}
+
+eval exec "$SCALACMD" \
+     {{{JVM_OPTS}}} \
+     ${JAVA_OPTS} \
+     {{^EXPANDED_CLASSPATH}}
+     -cp "'{{{EXTRA_CLASSPATH}}}${PROG_HOME}/lib/*${CLASSPATH_SUFFIX}'" \
+     {{/EXPANDED_CLASSPATH}}
+     {{#EXPANDED_CLASSPATH}}
+     -cp "'{{{EXTRA_CLASSPATH}}}{{{EXPANDED_CLASSPATH}}}${CLASSPATH_SUFFIX}'" \
+     {{/EXPANDED_CLASSPATH}}
+     -Dprog.home="'${PROG_HOME}'" \
+     -Dprog.version="${PROG_VERSION}" \
+     -i ${PROG_HOME}/bin/preload.scala \
+     $@
+exit $?
