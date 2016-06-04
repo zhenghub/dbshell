@@ -11,8 +11,5 @@ lazy val dependencies = Seq(
   , "io.github.netvl.picopickle" %% "picopickle-core" % "0.3.0"
 )
 
-lazy val hbaseShell = Seq(
-
-)
-
 libraryDependencies ++= dependencies
+libraryDependencies += "com.lihaoyi" % "ammonite-repl" % "0.5.8" % "test" cross CrossVersion.full

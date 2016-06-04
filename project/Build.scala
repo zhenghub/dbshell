@@ -13,7 +13,7 @@ object Build extends sbt.Build {
       packMain := Map("dbshell" -> "org.freefeeling.DbShell"), // DbShell doesn't work, set packMain only to make sbt-pack generate a executable bash script
       packGenerateWindowsBatFile := false,
       packBashTemplate := "resources/launch-scala.mustache",
-      packResourceDir := Map(baseDirectory.value / "resources/preload.scala" -> "bin/preload.scala")
+      packResourceDir := Map(baseDirectory.value / "resources/preload.scala" -> "bin/preload.scala", baseDirectory.value / "resources/init.scala" -> "bin/init.scala")
     )
   )
 }

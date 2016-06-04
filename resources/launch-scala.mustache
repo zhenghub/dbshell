@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #/*--------------------------------------------------------------------------
 # *  Copyright 2012 Taro L. Saito
 # *
@@ -40,7 +40,7 @@ if [ -z "$PROG_HOME" ] ; then
   cd "$saveddir"
 fi
 
-SCALACMD=scala
+AMMCMD=amm
 
 CLASSPATH_SUFFIX=""
 # Path separator used in EXTRA_CLASSPATH
@@ -49,17 +49,17 @@ PSEP=":"
 PROG_NAME={{{PROG_NAME}}}
 PROG_VERSION={{{PROG_VERSION}}}
 
-eval exec "$SCALACMD" \
+function cmd() {
+   echo "val argsStr: String = \"\"\"$@\"\"\";" $(sed '1d' ${PROG_HOME}/bin/preload.scala)
+   # echo $(echo ";main(\"\"\"$@\"\"\")" | cat ${PROG_HOME}/bin/preload.scala - )
+}
+
+"$AMMCMD" \
      {{{JVM_OPTS}}} \
      ${JAVA_OPTS} \
      {{^EXPANDED_CLASSPATH}}
-     -cp "'{{{EXTRA_CLASSPATH}}}${PROG_HOME}/lib/*${CLASSPATH_SUFFIX}'" \
      {{/EXPANDED_CLASSPATH}}
      {{#EXPANDED_CLASSPATH}}
-     -cp "'{{{EXTRA_CLASSPATH}}}{{{EXPANDED_CLASSPATH}}}${CLASSPATH_SUFFIX}'" \
      {{/EXPANDED_CLASSPATH}}
-     -Dprog.home="'${PROG_HOME}'" \
-     -Dprog.version="${PROG_VERSION}" \
-     -i ${PROG_HOME}/bin/preload.scala \
-     $@
+     -p "$(cmd ${PROG_HOME} $@)"
 exit $?
