@@ -11,6 +11,10 @@ trait Result{
   def columnLabels: Seq[String]
 
   def rows: List[Seq[Any]]
+
+  def columns[T](idx: Int) = {
+    rows.map(_(idx).asInstanceOf[T])
+  }
 }
 
 object Result {

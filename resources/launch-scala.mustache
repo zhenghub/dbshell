@@ -50,11 +50,12 @@ PROG_NAME={{{PROG_NAME}}}
 PROG_VERSION={{{PROG_VERSION}}}
 
 function cmd() {
-   echo "val argsStr: String = \"\"\"$@\"\"\";" $(sed '1d' ${PROG_HOME}/bin/preload.scala)
+   # echo "val argsStr: String = \"\"\"$@\"\"\";" $(sed '1d' ${PROG_HOME}/bin/preload.scala)
    # echo $(echo ";main(\"\"\"$@\"\"\")" | cat ${PROG_HOME}/bin/preload.scala - )
+   echo $(cat ${PROG_HOME}/bin/preload.scala)
 }
 
-"$AMMCMD" \
+export DbShell_args="${PROG_HOME} $@" && "$AMMCMD" \
      {{{JVM_OPTS}}} \
      ${JAVA_OPTS} \
      {{^EXPANDED_CLASSPATH}}

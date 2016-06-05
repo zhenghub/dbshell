@@ -1,2 +1,25 @@
 * dbshell
-database shell based on scala inspired by scalikejdbc dbconsole
+This is a shell for relational database based on scala inspired by scalikejdbc dbconsole. It helps you to execute sqls in a scala repl of Ammonite.
+When you want to count all of the rows of tables whose name contains some string of all of the databases immediately, what will you do? 
+I'm not familiar with Procedure syntax and don't know how write a sql for this, so I have to write a bash script.
+But now I can write simple scala to handle this problems.
+** usage
+1. In dbshell, you can execute sqls as if in db shell client like mysql's client.
+   #+BEGIN_SRC scala
+   "show databases"!
+   #+END_SRC
+   #+BEGIN_SRC 
+   +--------------------+
+   | Database           |
+   +--------------------+
+   | information_schema |
+   | mysql              |
+   | performance_schema |
+   | sys                |
+   +--------------------+
+   #+END_SRC
+** install
+Currently dbshell is working in Linux and in Ammonite.
+The regular scala repl has some auto-completion problems when start it with -i params to start dbshell.
+So you need to install Ammonite first, than clone this repository and run "sbt packArchive" to generate executable bash file.
+It will be target/pack/bin/dbshell.

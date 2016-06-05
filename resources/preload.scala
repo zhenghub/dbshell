@@ -1,5 +1,5 @@
-val argsStr: String = ""
-println(s"dbshell progHome: ${argsStr}");
+val argsStr = System.getenv("DbShell_args");
+println(s"dbshell args = ${argsStr}");
 
 import ammonite.ops._;
 

@@ -21,7 +21,7 @@ case class Db(poolName: String, dbUri: String, userName: String, password: Strin
     }
   }
 
-  def borrow = DBSession(pool.borrow())
+  def borrow() = DBSession(pool.borrow())
 }
 
 class Table(val tableName: String, val columns: Seq[String]) {
