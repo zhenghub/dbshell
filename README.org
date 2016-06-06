@@ -6,7 +6,7 @@ But now I can write simple scala to handle this problems.
 ** usage
 1. In dbshell, you can execute sqls as if in db shell client like mysql's client.
    #+BEGIN_SRC scala
-   "show databases"!
+   "show databases"?
    #+END_SRC
    #+BEGIN_SRC 
    +--------------------+

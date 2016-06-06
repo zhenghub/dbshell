@@ -9,6 +9,7 @@ lazy val dependencies = Seq(
   , "mysql" % "mysql-connector-java" % "5.1.18"
   , "org.scalikejdbc" %% "scalikejdbc" % "2.3.5"
   , "io.github.netvl.picopickle" %% "picopickle-core" % "0.3.0"
+  , "org.scalaz" %% "scalaz-core" % "7.2.3"
 )
 
 libraryDependencies ++= dependencies

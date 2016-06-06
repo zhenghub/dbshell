@@ -19,9 +19,9 @@ trait Result{
 
 object Result {
 
-  class ResultWithNoMeta extends Result{
+  class EmptyResult extends Result{
     override def merge(res: WrappedResultSet): Result = {
-      new ResultWithMeta((1 to res.metaData.getColumnCount).map(res.metaData.getColumnLabel), List((1 to res.metaData.getColumnCount).map(res.any)))
+      new QueryResult((1 to res.metaData.getColumnCount).map(res.metaData.getColumnLabel), List((1 to res.metaData.getColumnCount).map(res.any)))
     }
 
     override def columnLabels: Seq[String] = ???
@@ -29,9 +29,9 @@ object Result {
     override def rows: List[Seq[Any]] = ???
   }
 
-  case class ResultWithMeta(val columnLabels: Seq[String], val rows: List[Seq[Any]]) extends Result{
+  case class QueryResult(val columnLabels: Seq[String], val rows: List[Seq[Any]]) extends Result{
     override def merge(res: WrappedResultSet): Result = {
-      ResultWithMeta(columnLabels, rows.:+ ((1 to columnLabels.length).map(res.any)))
+      QueryResult(columnLabels, rows.:+ ((1 to columnLabels.length).map(res.any)))
     }
   }
 
@@ -43,7 +43,7 @@ object Result {
     override def rows: List[Seq[Any]] = ???
   }
 
-  def apply():Result = new ResultWithNoMeta
+  def apply():Result = new EmptyResult
 
   def apply(msg: String) = SummaryResult(msg)
 
