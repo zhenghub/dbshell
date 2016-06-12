@@ -11,13 +11,13 @@ import scalaz.Functor
   * Created by zhenghu on 16-4-25.
   */
 trait Executable {
+  implicit def str2Sql(sql: String) = new Sql(sql)
 
-  implicit def str2Sql(str: String) = new Sql(str)
-
+  implicit def sclikeSql2Sql(sql: SQL[_, _]) = new Sql(sql)
 }
 
 object Sql {
-  val queryPattern = """^\s*((?i)select|show|desc|describe).*""".r
+  val queryPattern = """^\s*((?i)select|show|desc|describe|explain).*""".r
 
   def pprint(result: Result)(implicit printer: Printer) = {
     result match {
@@ -31,23 +31,53 @@ object Sql {
   }
 }
 
-class Sql(str: String) {
+class Sql(sql: SQL[_, _]) {
 
-  val underlying = SQL(str)
-
-  private def isQuery = {
-    Sql.queryPattern.findFirstMatchIn(str).isDefined
+  def this(sqlString: String) {
+    this(SQL(sqlString))
   }
 
-  def ??(implicit session: DBSession) = {
+  private def statement = sql.statement
+
+  private def isQuery = {
+    Sql.queryPattern.findFirstMatchIn(statement).isDefined
+  }
+
+  /**
+    * execute sql
+    * @param session
+    * @return
+    */
+  def ??(implicit session: DBSession): Result = {
     if (isQuery) {
-      underlying.foldLeft(Result())(_.merge(_))
+      query
     } else {
-      Result(s"${underlying.executeUpdate().apply()} rows affected")
+      Result(s"${execute} rows affected")
     }
   }
 
-  def ?(implicit session: DBSession, printer: Printer) = {
+  /**
+    * query
+    * @param session
+    * @return
+    */
+  def query(implicit session: DBSession): Result = {
+    sql.foldLeft(Result())(_.merge(_))
+  }
+
+  def ?#(implicit session: DBSession) = query
+
+  def execute(implicit session: DBSession) = sql.executeUpdate().apply()
+
+  def ?!(implicit session: DBSession) = execute
+
+  /**
+    * execute sql and print result
+    * @param session
+    * @param printer
+    * @return
+    */
+  def ?(implicit session: DBSession, printer: Printer): Result = {
     val res = ??
     Sql.pprint(res)
     res

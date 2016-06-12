@@ -33,6 +33,7 @@ object Result {
     override def merge(res: WrappedResultSet): Result = {
       QueryResult(columnLabels, rows.:+ ((1 to columnLabels.length).map(res.any)))
     }
+    override def toString = "columns: " + columnLabels.mkString(",")
   }
 
   case class SummaryResult(msg: String) extends Result {
