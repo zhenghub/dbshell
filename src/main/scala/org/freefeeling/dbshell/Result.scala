@@ -44,6 +44,16 @@ object Result {
     override def rows: List[Seq[Any]] = ???
   }
 
+  case class ErrorResult(e: Throwable) extends Result {
+    override def merge(res: WrappedResultSet): Result = ???
+
+    override def columnLabels: Seq[String] = ???
+
+    override def rows: List[Seq[Any]] = ???
+
+    override def toString = s"${e}:${e.getMessage}"
+  }
+
   def apply():Result = new EmptyResult
 
   def apply(msg: String) = SummaryResult(msg)

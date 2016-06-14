@@ -8,7 +8,7 @@ But now I can write simple scala to handle this problems.
    #+BEGIN_SRC scala
    "show databases"?
    #+END_SRC
-   #+BEGIN_SRC 
+   #+BEGIN_SRC plain
    +--------------------+
    | Database           |
    +--------------------+
@@ -17,6 +17,29 @@ But now I can write simple scala to handle this problems.
    | performance_schema |
    | sys                |
    +--------------------+
+   #+END_SRC
+2. When a sql is returned with a error, dbshell only print the message since usually the syntax message can tell the problem.
+   But if you want to see the stacktrace, run dbe
+   #+BEGIN_SRC scala
+   dbe
+   #+END_SRC
+   #+BEGIN_SRC plain
+   @ dbe 
+   com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'row_counts' in 'field list'
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+        at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+        at com.mysql.jdbc.Util.getInstance(Util.java:386)
+        at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1052)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3609)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3541)
+        at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2002)
+        at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2163)
+        at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2624)
+        ...
+        ...
    #+END_SRC
 ** install
 Currently dbshell is working in Linux and in Ammonite.

@@ -18,17 +18,6 @@ trait Executable {
 
 object Sql {
   val queryPattern = """^\s*((?i)select|show|desc|describe|explain).*""".r
-
-  def pprint(result: Result)(implicit printer: Printer) = {
-    result match {
-      case r: EmptyResult =>
-        println("Empty set")
-      case r: QueryResult =>
-        printer.print(r)
-      case SummaryResult(msg) =>
-        println(msg)
-    }
-  }
 }
 
 class Sql(sql: SQL[_, _]) {
@@ -74,12 +63,12 @@ class Sql(sql: SQL[_, _]) {
   /**
     * execute sql and print result
     * @param session
-    * @param printer
+    * @param outLook
     * @return
     */
-  def ?(implicit session: DBSession, printer: Printer): Result = {
-    val res = ??
-    Sql.pprint(res)
+  def ?(implicit session: DBSession, outLook: ShellOutLook): Result = {
+    val res = outLook.execute(??)
+    outLook.display(res)
     res
   }
 

@@ -44,5 +44,10 @@ object DbShell extends DbShell {
     db("console", jdbc, user, password)
   }
 
-  implicit val tablePprinter = new BeautifyPrinter
+  val tablePprinter = new BeautifyPrinter
+  implicit val outlook: ShellOutLook = new DefaultShellOutLook(tablePprinter)
+
+  def dbe: Unit = {
+    outlook.lastException
+  }
 }
